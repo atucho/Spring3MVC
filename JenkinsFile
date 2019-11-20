@@ -23,7 +23,7 @@ pipeline {
                 bat 'MiQuality.bat'
                 echo 'Quality'
                 pmd canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '', unHealthy: ''
-                checkstyle canComputeNew: false, defaultEncoding: '', healthy: '10', pattern: '', unHealthy: '11'
+                checkstyle canComputeNew: false, defaultEncoding: '', failedTotalAll: '15', healthy: '', pattern: '', unHealthy: '', unstableTotalAll: '10'
             }
             post { 
                 always { //Job 3
