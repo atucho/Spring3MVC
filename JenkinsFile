@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('JOB1') { //Job 1
             steps {
-                git ${params.GIT}
+                git "${params.GIT}"
                 echo 'Descargado'
                 bat 'MiMaven.bat'
                 echo 'Build'
