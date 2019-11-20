@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+    tools {
+        maven 'LocalMaven' 
+    }
+    stages {
+        stage('PRE') {
+            steps {
+                git 'https://github.com/atucho/Spring3MVC'
+                echo 'Descargado'
+            }
+        }
+        stage('BUILD') {
+            steps {
+                bat 'MiMaven.bat'
+                echo 'Build'
+            }
+        }
+        stage('QUALITY') {
+            steps {
+                bat 'MiQuality.bat'
+                echo 'Quality'
+            }
+        }
+    }
+}
