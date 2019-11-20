@@ -4,23 +4,41 @@ pipeline {
         maven 'LocalMaven' 
     }
     stages {
-        stage('PRE') {
+        stage('JOB1') { //Job 1
             steps {
                 git 'https://github.com/atucho/Spring3MVC'
                 echo 'Descargado'
-            }
-        }
-        stage('BUILD') {
-            steps {
                 bat 'MiMaven.bat'
                 echo 'Build'
+                archiveArtifacts '**/*.war'
+                echo 'Archivos generados se almacenan en workspace'
             }
         }
-        stage('QUALITY') {
+        stage('JOB2') { //Job 2
             steps {
                 bat 'MiQuality.bat'
                 echo 'Quality'
+                pmd canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '', unHealthy: ''
+                checkstyle canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '', unHealthy: ''
             }
         }
+        stage('JOB3') { //Job 3. Se ejecuta siempre
+            steps {
+                echo 'Se ejecuta siempre'
+            }
+        }
+        stage('JOB4') { //Job 4. Despliega en desarrollo sólo con éxito e inestable
+            steps {
+                //copyArtifacts filter: '**/*.war', fingerprintArtifacts: true, projectName: '11-01-groovy-practica', selector: lastSuccessful()
+                deploy adapters: [tomcat8(credentialsId: '7473bec0-0cfe-49c5-aab6-4611ec6ee8a8', path: '', url: 'http://localhost:8081/')], contextPath: null, onFailure: false, war: '**/*.war'
+            }
+        }
+        stage('JOB5') { //Job 4. Despliega en pro sólo con éxito
+            steps {
+                //copyArtifacts filter: '**/*.war', fingerprintArtifacts: true, projectName: '11-01-groovy-practica', selector: lastSuccessful()
+                deploy adapters: [tomcat8(credentialsId: '7473bec0-0cfe-49c5-aab6-4611ec6ee8a8', path: '', url: 'http://localhost:8082/')], contextPath: null, onFailure: false, war: '**/*.war'
+            }
+        }
+        
     }
 }
