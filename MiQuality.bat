@@ -1,1 +1,1 @@
-mvn pmd:pmd checklist:checklist
+mvn pmd:pmd checkstyle:checkstyle
