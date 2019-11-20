@@ -22,12 +22,13 @@ pipeline {
                 pmd canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '', unHealthy: ''
                 checkstyle canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '', unHealthy: ''
             }
-        }
-        stage('JOB3') { //Job 3. Se ejecuta siempre
-            steps {
-                echo 'Se ejecuta siempre'
+            post { 
+                always { //Job 3
+                     echo 'Se ejecuta siempre'
+                }
             }
         }
+        
         stage('JOB4') { //Job 4. Despliega en desarrollo sólo con éxito e inestable
             steps {
                 //copyArtifacts filter: '**/*.war', fingerprintArtifacts: true, projectName: '11-01-groovy-practica', selector: lastSuccessful()
