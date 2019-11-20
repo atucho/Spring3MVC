@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    parameters {
+        string(name: 'GIT', defaultValue: 'https://github.com/atucho/Spring3MVC', description: 'URL del GIT')
+    }
     tools {
         maven 'LocalMaven'
         jdk 'LocalJDK8'
@@ -7,7 +10,7 @@ pipeline {
     stages {
         stage('JOB1') { //Job 1
             steps {
-                git 'https://github.com/atucho/Spring3MVC'
+                git ${params.GIT}
                 echo 'Descargado'
                 bat 'MiMaven.bat'
                 echo 'Build'
@@ -20,7 +23,7 @@ pipeline {
                 bat 'MiQuality.bat'
                 echo 'Quality'
                 pmd canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '', unHealthy: ''
-                checkstyle canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '', unHealthy: ''
+                checkstyle canComputeNew: false, defaultEncoding: '', healthy: '10', pattern: '', unHealthy: '11'
             }
             post { 
                 always { //Job 3
